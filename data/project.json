@@ -1,75 +1,107 @@
 {
   "id": "project-default",
   "name": "My drawing",
-  "createdAt": "2026-03-17T21:03:32.904Z",
-  "updatedAt": "2026-03-17T21:11:36.543Z",
-  "activeRevisionId": "rev-0C1j4m3Qdj",
+  "createdAt": "2026-03-17T21:52:28.630Z",
+  "updatedAt": "2026-03-17T22:00:33.550Z",
+  "activeRevisionId": "rev-c6-zTaL70M",
   "revisions": [
     {
-      "id": "rev-9-pWzw1veh",
-      "parentRevisionId": "rev-0C1j4m3Qdj",
-      "title": "一家宇宙飞船 上面有beaver一家人",
-      "prompt": "一家宇宙飞船 上面有beaver一家人",
-      "editInstruction": "一家宇宙飞船 上面有beaver一家人",
+      "id": "rev-c6-zTaL70M",
+      "parentRevisionId": "rev-CXoF24gQ39",
+      "title": "Apple",
+      "prompt": "apple",
+      "editInstruction": "apple",
       "status": "ready",
-      "createdAt": "2026-03-17T21:08:38.185Z",
+      "createdAt": "2026-03-17T22:00:17.035Z",
       "sourceType": "revision",
-      "sourceImageUrl": "/api/assets/source/2026-03-17/NJC04JPP2Zy9.png",
-      "imageUrl": "/api/assets/final/2026-03-17/QRXlAoJG8Ip-.png",
-      "thumbnailUrl": "/api/assets/final/2026-03-17/QRXlAoJG8Ip-.png",
+      "sourceImageUrl": "/api/assets/source/2026-03-17/BIpRCweeH5EF.png",
+      "imageUrl": "/api/assets/final/2026-03-17/PWE0bNt7Pm65.png",
+      "thumbnailUrl": "/api/assets/final/2026-03-17/PWE0bNt7Pm65.png",
       "modelName": "gemini-2.5-flash-image",
-      "jobId": "job-QqmmWxg6dY",
+      "jobId": "job-ptXjEQ7Zu6",
       "errorMessage": null
     },
     {
-      "id": "rev-0C1j4m3Qdj",
-      "parentRevisionId": null,
-      "title": "A cozy forest with a fox and mushrooms",
-      "prompt": "A cozy forest with a fox and mushrooms",
-      "editInstruction": "A cozy forest with a fox and mushrooms",
+      "id": "rev-CXoF24gQ39",
+      "parentRevisionId": "rev-5PX5pAFd_6",
+      "title": "A car",
+      "prompt": "a car",
+      "editInstruction": "a car",
       "status": "ready",
-      "createdAt": "2026-03-17T21:03:39.402Z",
-      "sourceType": "prompt",
-      "sourceImageUrl": "/api/assets/source/2026-03-17/xjcb4BhGJKKA.png",
-      "imageUrl": "/api/assets/final/2026-03-17/4Qg-S2ybE1L6.png",
-      "thumbnailUrl": "/api/assets/final/2026-03-17/4Qg-S2ybE1L6.png",
+      "createdAt": "2026-03-17T21:55:03.124Z",
+      "sourceType": "revision",
+      "sourceImageUrl": "/api/assets/source/2026-03-17/L401iE1FT3kz.png",
+      "imageUrl": "/api/assets/final/2026-03-17/3aW37v07RuBB.png",
+      "thumbnailUrl": "/api/assets/final/2026-03-17/3aW37v07RuBB.png",
       "modelName": "gemini-2.5-flash-image",
-      "jobId": "job-MlbutUR2pY",
+      "jobId": "job-0c7Pc9RwS8",
+      "errorMessage": null
+    },
+    {
+      "id": "rev-5PX5pAFd_6",
+      "parentRevisionId": null,
+      "title": "A robot taxi",
+      "prompt": "a robot taxi",
+      "editInstruction": "a robot taxi",
+      "status": "ready",
+      "createdAt": "2026-03-17T21:52:30.430Z",
+      "sourceType": "prompt",
+      "sourceImageUrl": "/api/assets/source/2026-03-17/L69uILod94wX.png",
+      "imageUrl": "/api/assets/final/2026-03-17/K2vVEJwgxbT9.png",
+      "thumbnailUrl": "/api/assets/final/2026-03-17/K2vVEJwgxbT9.png",
+      "modelName": "gemini-2.5-flash-image",
+      "jobId": "job-HM-zUgMVvO",
       "errorMessage": null
     }
   ],
   "messages": [
     {
-      "id": "m-X5YSiISj63",
+      "id": "m-IdLpwp8Z48",
       "role": "user",
       "kind": "prompt",
-      "text": "A cozy forest with a fox and mushrooms",
-      "createdAt": "2026-03-17T21:03:39.402Z"
+      "text": "a robot taxi",
+      "createdAt": "2026-03-17T21:52:30.430Z"
     },
     {
-      "id": "m-bcx7jIrEpi",
+      "id": "m-FovJpBRd_I",
       "role": "assistant",
       "kind": "status",
-      "text": "Here is the black-and-white line art for a coloring page, based on your image and additional request for \"A cozy forest with a fox and mushrooms\":",
-      "revisionId": "rev-0C1j4m3Qdj",
+      "text": "Here is a black-and-white line art version of the image for a coloring page, with a robot taxi.",
+      "revisionId": "rev-5PX5pAFd_6",
       "phase": "complete",
-      "createdAt": "2026-03-17T21:03:56.423Z"
+      "createdAt": "2026-03-17T21:52:47.935Z"
     },
     {
-      "id": "m-dns5zz2Ixo",
+      "id": "m-VE2JoO3O59",
       "role": "user",
       "kind": "prompt",
-      "text": "一家宇宙飞船 上面有beaver一家人",
-      "createdAt": "2026-03-17T21:08:38.185Z"
+      "text": "a car",
+      "createdAt": "2026-03-17T21:55:03.124Z"
     },
     {
-      "id": "m-y4amabMXu-",
+      "id": "m-sXqBEgaVHm",
       "role": "assistant",
       "kind": "status",
-      "text": "Here's the coloring page you requested:",
-      "revisionId": "rev-9-pWzw1veh",
+      "text": "Here's the black-and-white line art for a coloring page, keeping the main subject and composition recognizable, with clean bold outlines and a white background.",
+      "revisionId": "rev-CXoF24gQ39",
       "phase": "complete",
-      "createdAt": "2026-03-17T21:08:58.197Z"
+      "createdAt": "2026-03-17T21:55:23.417Z"
+    },
+    {
+      "id": "m-Cg0N7ZdsBw",
+      "role": "user",
+      "kind": "prompt",
+      "text": "apple",
+      "createdAt": "2026-03-17T22:00:17.035Z"
+    },
+    {
+      "id": "m-q1UyQNVNX3",
+      "role": "assistant",
+      "kind": "status",
+      "text": "Sure! Here's the image converted into black-and-white line art for a coloring page, with an apple as requested:",
+      "revisionId": "rev-c6-zTaL70M",
+      "phase": "complete",
+      "createdAt": "2026-03-17T22:00:33.550Z"
     }
   ]
 }

@@ -508,29 +508,36 @@
 .paperFrame,
 .viewerPaper {
   position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border: 2px solid var(--outline-strong);
+  border: 3px solid #111111;
   border-radius: 1.3rem;
+  padding: 0.45rem;
   background: #fffdf6;
-  box-shadow: inset 0 0 0 8px color-mix(in oklab, var(--yellow) 14%, white);
+  box-shadow: none;
 }
 
 .paperFrame {
-  /* portrait A4 ratio, centred and height-constrained */
+  /* portrait A4 ratio, width-led with a height cap */
   aspect-ratio: 794 / 1123;
-  height: 100%;
-  width: auto;
+  width: 100%;
+  height: auto;
   min-height: 0;
   max-width: 100%;
+  max-height: 100%;
 }
 
 .previewImage,
 .viewerImage {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
+  display: block;
 }
 
 /* Meta row beneath the drawing */
@@ -746,8 +753,12 @@
   position: relative;
   z-index: 1;
   width: min(100%, 54rem);
+  height: calc(100dvh - 2rem);
   max-height: calc(100dvh - 2rem);
-  overflow: auto;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  overflow: hidden;
   padding: 1.1rem;
   border: 2px solid var(--outline-strong);
   border-radius: 2rem;
@@ -760,7 +771,7 @@
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  margin-bottom: 1rem;
+  min-height: 0;
 }
 
 .viewerCloseIcon {
@@ -773,7 +784,13 @@
 
 .viewerPaper {
   aspect-ratio: 794 / 1123;
+  justify-self: center;
+  align-self: center;
   width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
 }
 
 /* ─── Chat panel empty state ─────────────────────────────── */
@@ -993,5 +1010,34 @@
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+  }
+
+  .viewer {
+    padding: 0.75rem;
+  }
+
+  .viewerPanel {
+    width: 100%;
+    height: calc(100dvh - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
+    gap: 0.75rem;
+    padding: 0.9rem;
+    border-radius: 1.5rem;
+  }
+
+  .viewerHeader {
+    gap: 0.75rem;
+  }
+
+  .viewerHeader h2 {
+    font-size: clamp(1.05rem, 4vw, 1.35rem);
+  }
+
+  .viewerPaper {
+    max-width: min(100%, calc((100dvh - 13rem) * 794 / 1123));
+  }
+
+  .viewerActions {
+    margin-top: 0;
   }
 }
