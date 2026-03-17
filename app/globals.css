@@ -1,0 +1,89 @@
+:root {
+  color-scheme: light;
+
+  /* ── PAW Patrol Core Palette ──────────────────────────── */
+  --paw-red:    #E8293A;   /* Marshall's red                */
+  --paw-blue:   #4BBFE8;   /* PAW logo sky blue             */
+  --paw-yellow: #F5C518;   /* PAW logo golden yellow        */
+  --paw-green:  #3A9A4A;   /* Background forest green       */
+  --paw-navy:   #1A4FAB;   /* Shield royal blue             */
+  --paw-brown:  #C87941;   /* Chase & Rubble fur brown      */
+  --paw-cream:  #F2D9A2;   /* Light fur / skin tone         */
+  --paw-dark:   #2D2D2D;   /* Outlines & charcoal           */
+
+  /* ── Semantic tokens (mapped to PAW palette) ─────────── */
+  --bg:             #FFFDF6;
+  --bg-accent:      color-mix(in oklab, var(--paw-cream) 55%, white);
+  --surface:        #FFFFFF;
+  --surface-strong: color-mix(in oklab, var(--paw-cream) 38%, white);
+  --ink:            var(--paw-dark);
+  --ink-soft:       color-mix(in oklab, var(--paw-dark) 62%, white);
+  --outline:        color-mix(in oklab, var(--paw-brown) 55%, white);
+  --outline-strong: color-mix(in oklab, var(--paw-dark) 80%, var(--paw-brown));
+
+  /* ── Accent aliases ───────────────────────────────────── */
+  --peach:  var(--paw-red);
+  --yellow: var(--paw-yellow);
+  --mint:   var(--paw-green);
+  --sky:    var(--paw-blue);
+  --pink:   color-mix(in oklab, var(--paw-red) 55%, white);
+
+  /* ── Shadows ──────────────────────────────────────────── */
+  --shadow:      0 18px 50px color-mix(in oklab, var(--paw-navy) 18%, transparent);
+  --shadow-soft: 0 10px 28px color-mix(in oklab, var(--paw-dark) 10%, transparent);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+  background-color: var(--bg);
+  position: relative;
+}
+
+/* ── Fixed overall background ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    /* Top left glow */
+    radial-gradient(circle at top left, color-mix(in oklab, var(--yellow) 70%, transparent) 0, transparent 28%),
+    /* Top right glow */
+    radial-gradient(circle at top right, color-mix(in oklab, var(--sky) 40%, transparent) 0, transparent 30%),
+    /* Mid-left glow */
+    radial-gradient(circle at 20% 20%, color-mix(in oklab, var(--yellow) 30%, transparent), transparent 18rem),
+    /* Mid-right glow */
+    radial-gradient(circle at 80% 0%, color-mix(in oklab, var(--pink) 18%, transparent), transparent 20rem),
+    /* Bottom right glow (newly added for "bottom background") */
+    radial-gradient(circle at bottom right, color-mix(in oklab, var(--sky) 25%, transparent), transparent 35rem),
+    /* Overall vertical spread */
+    linear-gradient(180deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 84%, white) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
