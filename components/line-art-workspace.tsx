@@ -24,6 +24,7 @@ type LineArtWorkspaceProps = {
   initialProject: Project;
 };
 
+const APP_VERSION = "v0.9";
 
 export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
   const [project, setProject] = useState<Project>(initialProject);
@@ -368,6 +369,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
       <section className={styles.hero}>
         <div className={styles.heroText}>
           <h1>Line Art Creator</h1>
+          <div className={styles.heroVersion}>J7Supreme {APP_VERSION}</div>
         </div>
         <Image
           src="/logo.png"
@@ -761,7 +763,6 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
             </div>
 
             <div className={styles.viewerActions}>
-              <p>Save this version when you&apos;re happy with it.</p>
               <button
                 className={styles.downloadButton}
                 type="button"

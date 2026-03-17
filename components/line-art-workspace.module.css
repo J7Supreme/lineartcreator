@@ -35,6 +35,14 @@
   line-height: 1;
 }
 
+.heroVersion {
+  margin-top: 0.2rem;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
 .hero p {
   margin: 0.3rem 0 0;
   color: var(--ink-soft);
@@ -377,9 +385,9 @@
 .viewerActions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.55rem;
 }
 
 .composerActions span {
