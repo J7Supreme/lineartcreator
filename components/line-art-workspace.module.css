@@ -755,6 +755,14 @@
   margin-bottom: 1rem;
 }
 
+.viewerCloseIcon {
+  display: none;
+}
+
+.viewerCloseLabel {
+  display: inline;
+}
+
 .viewerPaper {
   aspect-ratio: 794 / 1123;
   width: 100%;
@@ -921,8 +929,7 @@
   }
 
   .uploadRow,
-  .viewerActions,
-  .viewerHeader {
+  .viewerActions {
     flex-direction: column;
     align-items: stretch;
   }
@@ -959,5 +966,24 @@
   .previewDownloadRow {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .viewerCloseLabel {
+    display: none;
+  }
+
+  .viewerCloseIcon {
+    display: inline;
+  }
+
+  .viewerCloseButton {
+    flex-shrink: 0;
+    width: 2.8rem;
+    height: 2.8rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
   }
 }

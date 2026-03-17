@@ -24,17 +24,6 @@ type LineArtWorkspaceProps = {
   initialProject: Project;
 };
 
-const QUICK_PROMPTS = [
-  "Turn this into a farm scene",
-  "Add a simple rainbow behind the character",
-  "Make the main character larger and centered"
-];
-
-const INITIAL_PROMPTS = [
-  "A cozy forest with a fox and mushrooms",
-  "A friendly dragon reading a book",
-  "A cat napping in a sunny garden"
-];
 
 export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
   const [project, setProject] = useState<Project>(initialProject);
@@ -123,9 +112,6 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
     };
   }, [activeRevisionId, shouldPollActiveRevision]);
 
-  function handleQuickPrompt(prompt: string) {
-    setDraft(prompt);
-  }
 
   function handleOpenViewer(revisionId: string) {
     setViewerState({ open: true, revisionId });
@@ -499,18 +485,6 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
             </div>
           )}
 
-          <div className={styles.quickPromptRow}>
-            {(isInitial ? INITIAL_PROMPTS : QUICK_PROMPTS).map((prompt) => (
-              <button
-                key={prompt}
-                className={styles.quickPrompt}
-                type="button"
-                onClick={() => handleQuickPrompt(prompt)}
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
 
           <form className={styles.composer} onSubmit={handleSubmit}>
             <textarea
@@ -771,8 +745,9 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
               <div>
                 <h2>{viewerRevision.title}</h2>
               </div>
-              <button className={styles.secondaryButton} type="button" onClick={handleCloseViewer}>
-                Close ✕
+              <button className={`${styles.secondaryButton} ${styles.viewerCloseButton}`} type="button" onClick={handleCloseViewer} aria-label="Close">
+                <span className={styles.viewerCloseLabel}>Close ✕</span>
+                <span className={styles.viewerCloseIcon} aria-hidden="true">✕</span>
               </button>
             </div>
 

@@ -1,107 +1,75 @@
 {
   "id": "project-default",
   "name": "My drawing",
-  "createdAt": "2026-03-17T20:49:22.295Z",
-  "updatedAt": "2026-03-17T21:01:09.409Z",
-  "activeRevisionId": "rev-QOJEmpnmY0",
+  "createdAt": "2026-03-17T21:03:32.904Z",
+  "updatedAt": "2026-03-17T21:08:58.197Z",
+  "activeRevisionId": "rev-9-pWzw1veh",
   "revisions": [
     {
-      "id": "rev-7ZB4pvvuDs",
-      "parentRevisionId": "rev-leKOu6rC1I",
-      "title": "Add a simple rainbow behind the characte…",
-      "prompt": "Add a simple rainbow behind the character",
-      "editInstruction": "Add a simple rainbow behind the character",
+      "id": "rev-9-pWzw1veh",
+      "parentRevisionId": "rev-0C1j4m3Qdj",
+      "title": "一家宇宙飞船 上面有beaver一家人",
+      "prompt": "一家宇宙飞船 上面有beaver一家人",
+      "editInstruction": "一家宇宙飞船 上面有beaver一家人",
       "status": "ready",
-      "createdAt": "2026-03-17T20:55:12.436Z",
+      "createdAt": "2026-03-17T21:08:38.185Z",
       "sourceType": "revision",
-      "sourceImageUrl": "/api/assets/source/2026-03-17/3a5MFcozbU7i.png",
-      "imageUrl": "/api/assets/final/2026-03-17/gBQiA45niJ6Z.png",
-      "thumbnailUrl": "/api/assets/final/2026-03-17/gBQiA45niJ6Z.png",
+      "sourceImageUrl": "/api/assets/source/2026-03-17/NJC04JPP2Zy9.png",
+      "imageUrl": "/api/assets/final/2026-03-17/QRXlAoJG8Ip-.png",
+      "thumbnailUrl": "/api/assets/final/2026-03-17/QRXlAoJG8Ip-.png",
       "modelName": "gemini-2.5-flash-image",
-      "jobId": "job-YldgX_Z1AA",
+      "jobId": "job-QqmmWxg6dY",
       "errorMessage": null
     },
     {
-      "id": "rev-leKOu6rC1I",
-      "parentRevisionId": "rev-QOJEmpnmY0",
-      "title": "一个橘猫在游泳，边上有一个香蕉",
-      "prompt": "一个橘猫在游泳，边上有一个香蕉",
-      "editInstruction": "一个橘猫在游泳，边上有一个香蕉",
-      "status": "ready",
-      "createdAt": "2026-03-17T20:54:41.577Z",
-      "sourceType": "revision",
-      "sourceImageUrl": "/api/assets/source/2026-03-17/gKnxPqrB1bfF.png",
-      "imageUrl": "/api/assets/final/2026-03-17/D7QGbPXXPSYd.png",
-      "thumbnailUrl": "/api/assets/final/2026-03-17/D7QGbPXXPSYd.png",
-      "modelName": "gemini-2.5-flash-image",
-      "jobId": "job-KFHMpK4Yq3",
-      "errorMessage": null
-    },
-    {
-      "id": "rev-QOJEmpnmY0",
+      "id": "rev-0C1j4m3Qdj",
       "parentRevisionId": null,
-      "title": "一个机械哥斯拉在和小猪佩奇跳舞",
-      "prompt": "一个机械哥斯拉在和小猪佩奇跳舞",
-      "editInstruction": "一个机械哥斯拉在和小猪佩奇跳舞",
+      "title": "A cozy forest with a fox and mushrooms",
+      "prompt": "A cozy forest with a fox and mushrooms",
+      "editInstruction": "A cozy forest with a fox and mushrooms",
       "status": "ready",
-      "createdAt": "2026-03-17T20:49:36.205Z",
+      "createdAt": "2026-03-17T21:03:39.402Z",
       "sourceType": "prompt",
-      "sourceImageUrl": "/api/assets/source/2026-03-17/7gU7xVczOJ_b.png",
-      "imageUrl": "/api/assets/final/2026-03-17/RtB21VPm_pls.png",
-      "thumbnailUrl": "/api/assets/final/2026-03-17/RtB21VPm_pls.png",
+      "sourceImageUrl": "/api/assets/source/2026-03-17/xjcb4BhGJKKA.png",
+      "imageUrl": "/api/assets/final/2026-03-17/4Qg-S2ybE1L6.png",
+      "thumbnailUrl": "/api/assets/final/2026-03-17/4Qg-S2ybE1L6.png",
       "modelName": "gemini-2.5-flash-image",
-      "jobId": "job-yOvl7GfMfI",
+      "jobId": "job-MlbutUR2pY",
       "errorMessage": null
     }
   ],
   "messages": [
     {
-      "id": "m-S2PqZNbNdi",
+      "id": "m-X5YSiISj63",
       "role": "user",
       "kind": "prompt",
-      "text": "一个机械哥斯拉在和小猪佩奇跳舞",
-      "createdAt": "2026-03-17T20:49:36.205Z"
+      "text": "A cozy forest with a fox and mushrooms",
+      "createdAt": "2026-03-17T21:03:39.402Z"
     },
     {
-      "id": "m-UTRQz89she",
+      "id": "m-bcx7jIrEpi",
+      "role": "assistant",
+      "kind": "status",
+      "text": "Here is the black-and-white line art for a coloring page, based on your image and additional request for \"A cozy forest with a fox and mushrooms\":",
+      "revisionId": "rev-0C1j4m3Qdj",
+      "phase": "complete",
+      "createdAt": "2026-03-17T21:03:56.423Z"
+    },
+    {
+      "id": "m-dns5zz2Ixo",
+      "role": "user",
+      "kind": "prompt",
+      "text": "一家宇宙飞船 上面有beaver一家人",
+      "createdAt": "2026-03-17T21:08:38.185Z"
+    },
+    {
+      "id": "m-y4amabMXu-",
       "role": "assistant",
       "kind": "status",
       "text": "Here's the coloring page you requested:",
-      "revisionId": "rev-QOJEmpnmY0",
+      "revisionId": "rev-9-pWzw1veh",
       "phase": "complete",
-      "createdAt": "2026-03-17T20:49:54.233Z"
-    },
-    {
-      "id": "m-yzpoPUoDhj",
-      "role": "user",
-      "kind": "prompt",
-      "text": "一个橘猫在游泳，边上有一个香蕉",
-      "createdAt": "2026-03-17T20:54:41.577Z"
-    },
-    {
-      "id": "m-7FrJJPFIXp",
-      "role": "assistant",
-      "kind": "status",
-      "text": "Here's the coloring page you requested:",
-      "revisionId": "rev-leKOu6rC1I",
-      "phase": "complete",
-      "createdAt": "2026-03-17T20:54:57.752Z"
-    },
-    {
-      "id": "m-hEvRcOkDvv",
-      "role": "user",
-      "kind": "prompt",
-      "text": "Add a simple rainbow behind the character",
-      "createdAt": "2026-03-17T20:55:12.436Z"
-    },
-    {
-      "id": "m-yRgfsQW4BO",
-      "role": "assistant",
-      "kind": "status",
-      "text": "Your line art is ready. Open it, review it, and keep iterating if needed.",
-      "revisionId": "rev-7ZB4pvvuDs",
-      "phase": "complete",
-      "createdAt": "2026-03-17T20:55:28.318Z"
+      "createdAt": "2026-03-17T21:08:58.197Z"
     }
   ]
 }
