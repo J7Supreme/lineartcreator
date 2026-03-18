@@ -1,12 +1,10 @@
 import "server-only";
 
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { getStore } from "@netlify/blobs";
 import { nanoid } from "nanoid";
 import sharp from "sharp";
-
-const ASSET_ROOT = path.join(process.cwd(), "data", "assets");
 
 type AssetBucket = "uploads" | "source" | "final";
 
@@ -32,12 +30,6 @@ function getExtension(mimeType: string) {
   return MIME_EXTENSIONS[mimeType] ?? "png";
 }
 
-async function ensureAssetRoot() {
-  await mkdir(path.join(ASSET_ROOT, "uploads"), { recursive: true });
-  await mkdir(path.join(ASSET_ROOT, "source"), { recursive: true });
-  await mkdir(path.join(ASSET_ROOT, "final"), { recursive: true });
-}
-
 function createRelativePath(bucket: AssetBucket, mimeType: string) {
   const extension = getExtension(mimeType);
   const datePrefix = new Date().toISOString().slice(0, 10);
@@ -48,24 +40,24 @@ function toAssetUrl(relativePath: string) {
   return `/api/assets/${relativePath}`;
 }
 
+function isValidRelativePath(relativePath: string) {
+  const normalized = path.normalize(relativePath);
+  return !normalized.startsWith("..") && !path.isAbsolute(normalized);
+}
+
 export async function saveGeneratedImage(
   bucket: AssetBucket,
   base64Data: string,
   mimeType: string
 ): Promise<SavedAsset> {
-  await ensureAssetRoot();
-
+  const store = getStore("assets");
   const relativePath = createRelativePath(bucket, mimeType);
-  const absolutePath = path.join(ASSET_ROOT, relativePath);
 
-  await mkdir(path.dirname(absolutePath), { recursive: true });
-  await writeFile(absolutePath, Buffer.from(base64Data, "base64"));
+  await store.set(relativePath, Buffer.from(base64Data, "base64").buffer as ArrayBuffer, {
+    metadata: { mimeType }
+  });
 
-  return {
-    mimeType,
-    relativePath,
-    url: toAssetUrl(relativePath)
-  };
+  return { mimeType, relativePath, url: toAssetUrl(relativePath) };
 }
 
 export async function saveUploadedFile(file: File): Promise<SavedAsset> {
@@ -75,32 +67,34 @@ export async function saveUploadedFile(file: File): Promise<SavedAsset> {
     throw new Error("Only image uploads are supported.");
   }
 
-  await ensureAssetRoot();
-
+  const store = getStore("assets");
   const relativePath = createRelativePath("uploads", mimeType);
-  const absolutePath = path.join(ASSET_ROOT, relativePath);
 
-  await mkdir(path.dirname(absolutePath), { recursive: true });
-  await writeFile(absolutePath, Buffer.from(await file.arrayBuffer()));
+  await store.set(relativePath, await file.arrayBuffer(), {
+    metadata: { mimeType }
+  });
 
-  return {
-    mimeType,
-    relativePath,
-    url: toAssetUrl(relativePath)
-  };
+  return { mimeType, relativePath, url: toAssetUrl(relativePath) };
 }
 
 export async function readAsset(relativePath: string) {
-  const absolutePath = path.resolve(ASSET_ROOT, relativePath);
-
-  if (!absolutePath.startsWith(ASSET_ROOT)) {
+  if (!isValidRelativePath(relativePath)) {
     throw new Error("Invalid asset path.");
   }
 
-  const buffer = await readFile(absolutePath);
+  const store = getStore("assets");
+  const result = await store.getWithMetadata(relativePath, { type: "arrayBuffer" });
+
+  if (!result) {
+    throw new Error("Asset not found.");
+  }
+
+  const buffer = Buffer.from(result.data as ArrayBuffer);
   const extension = path.extname(relativePath).replace(".", "");
   const mimeType =
-    Object.entries(MIME_EXTENSIONS).find(([, value]) => value === extension)?.[0] ?? "image/png";
+    (result.metadata?.mimeType as string | undefined) ??
+    Object.entries(MIME_EXTENSIONS).find(([, value]) => value === extension)?.[0] ??
+    "image/png";
 
   return { buffer, mimeType };
 }

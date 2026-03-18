@@ -169,11 +169,7 @@ async function generateGeminiImage({
   modelName: string;
   parts: GeminiPart[];
 }): Promise<GeneratedImage> {
-  const apiKey = process.env.GEMINI_API_KEY;
-
-  if (!apiKey || apiKey === "your_gemini_api_key_here") {
-    throw new Error("GEMINI_API_KEY is not set. Please add it to your .env.local file.");
-  }
+  const apiKey = getGeminiApiKey();
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
@@ -224,6 +220,30 @@ async function generateGeminiImage({
     modelName,
     textResponse: partsList.map((part) => part.text).filter(Boolean).join(" ").trim() || undefined
   };
+}
+
+function getGeminiApiKey() {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+
+  if (!apiKey || apiKey === "your_gemini_api_key_here") {
+    throw new Error("GEMINI_API_KEY is not set. Add a valid Gemini API key in the deployment environment.");
+  }
+
+  // Gemini's Generative Language REST API expects an API key. A 3-part JWT here
+  // usually means a platform integration injected a service-account credential instead.
+  if (looksLikeJwt(apiKey)) {
+    throw new Error(
+      "GEMINI_API_KEY contains a JWT/service-account credential, not a Gemini API key. Remove the injected credential and configure a real Gemini API key, or switch the app to server-side Google auth/Vertex AI."
+    );
+  }
+
+  return apiKey;
+}
+
+function looksLikeJwt(value: string) {
+  const parts = value.split(".");
+
+  return parts.length === 3 && parts.every((part) => /^[A-Za-z0-9_-]+$/.test(part));
 }
 
 type GeminiImageResponse = {

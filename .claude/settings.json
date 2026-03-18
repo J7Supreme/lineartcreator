@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(netlify --version)",
+      "Bash(netlify status:*)",
+      "Bash(netlify login:*)",
+      "Bash(netlify link:*)",
+      "Bash(netlify sites:list)",
+      "Bash(pkill -f \"netlify dev\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(netlify env:list)",
+      "Bash(netlify env:get GEMINI_API_KEY)",
+      "Bash(GEMINI_API_KEY=\"***REMOVED-GOOGLE-API-KEY***\" curl -s -X POST \"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=$GEMINI_API_KEY\" -H \"Content-Type: application/json\" -d '{\"\"\"\"contents\"\"\"\":[{\"\"\"\"parts\"\"\"\":[{\"\"\"\"text\"\"\"\":\"\"\"\"A simple cat\"\"\"\"}]}],\"\"\"\"generationConfig\"\"\"\":{\"\"\"\"responseModalities\"\"\"\":[\"\"\"\"TEXT\"\"\"\",\"\"\"\"IMAGE\"\"\"\"]}}')",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s -X POST http://localhost:8888/api/project/revisions -H \"Content-Type: application/json\" -d '{\"\"\"\"prompt\"\"\"\":\"\"\"\"a simple cat\"\"\"\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(xxd)",
+      "Bash(KEY=\"***REMOVED-GOOGLE-API-KEY***\" curl -s -X POST \"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=$KEY\" -H \"Content-Type: application/json\" -d '{\"\"\"\"contents\"\"\"\":[{\"\"\"\"parts\"\"\"\":[{\"\"\"\"text\"\"\"\":\"\"\"\"a cat\"\"\"\"}]}],\"\"\"\"generationConfig\"\"\"\":{\"\"\"\"responseModalities\"\"\"\":[\"\"\"\"TEXT\"\"\"\",\"\"\"\"IMAGE\"\"\"\"]}}')",
+      "Bash(node -e \":*)",
+      "Bash(netlify env:set GEMINI_API_KEY \"***REMOVED-GOOGLE-API-KEY***\" --context dev)",
+      "Bash(netlify env:list --context all)",
+      "Bash(cd \"/Users/jameshou/Desktop/Repos/Line art creator\" for ctx in production deploy-preview branch-deploy dev development)",
+      "Bash(do echo:*)",
+      "Bash(grep .env find '/Users/jameshou/Desktop/Repos/Line art creator' -maxdepth 2 -name .env*)",
+      "Bash(env)",
+      "Bash(netlify env:unset GEMINI_API_KEY)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); r=d.get\\(''''revision'''',{}\\); print\\(''''status:'''', r.get\\(''''status''''\\)\\); print\\(''''error:'''', r.get\\(''''errorMessage''''\\)\\)\")"
+    ]
+  }
+}

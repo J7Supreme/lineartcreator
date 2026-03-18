@@ -1,8 +1,6 @@
 import "server-only";
 
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
-
+import { getStore } from "@netlify/blobs";
 import { nanoid } from "nanoid";
 
 import type {
@@ -17,8 +15,7 @@ import type {
 } from "@/lib/domain";
 import { createLineArtDataUrl } from "@/lib/line-art";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "project.json");
+const PROJECT_KEY = "data";
 
 let writeChain = Promise.resolve();
 
@@ -145,26 +142,22 @@ function normalizeProject(project: Partial<Project>): Project {
   };
 }
 
-async function ensureStore() {
-  await mkdir(DATA_DIR, { recursive: true });
-
-  try {
-    await readFile(DATA_FILE, "utf8");
-  } catch {
-    await writeProject(createSeedProject());
-  }
-}
-
 async function readProjectUnlocked(): Promise<Project> {
-  await ensureStore();
-  const raw = await readFile(DATA_FILE, "utf8");
+  const store = getStore("project");
+  const data = await store.get(PROJECT_KEY, { type: "json" });
 
-  return normalizeProject(JSON.parse(raw) as Partial<Project>);
+  if (!data) {
+    const seed = createSeedProject();
+    await writeProject(seed);
+    return seed;
+  }
+
+  return normalizeProject(data as Partial<Project>);
 }
 
 async function writeProject(project: Project) {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(DATA_FILE, `${JSON.stringify(project, null, 2)}\n`, "utf8");
+  const store = getStore("project");
+  await store.setJSON(PROJECT_KEY, project);
 }
 
 async function withWriteLock<T>(operation: () => Promise<T>) {

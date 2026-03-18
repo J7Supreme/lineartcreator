@@ -54,6 +54,10 @@
   width: clamp(2.4rem, 3.5vw, 3.2rem);
   height: clamp(2.4rem, 3.5vw, 3.2rem);
   object-fit: contain;
+  display: block;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   /* White bg becomes invisible via multiply; black arrow picks up page color */
   mix-blend-mode: multiply;
   opacity: 0.82;
@@ -904,6 +908,12 @@
 
   .hero {
     margin-bottom: 0.75rem;
+  }
+
+  .heroLogo {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
   }
 
   .workspace {
