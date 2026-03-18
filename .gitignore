@@ -3,6 +3,7 @@ node_modules
 npm-debug.log*
 .env.local
 .env*.local
+.claude/settings.json
 
 # Local Netlify folder
 .netlify

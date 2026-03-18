@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createLineArtDataUrl, pickFlavor } from "@/lib/line-art";
 
 type GeneratedImage = {
@@ -172,10 +174,13 @@ async function generateGeminiImage({
   const apiKey = getGeminiApiKey();
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey
+      },
       body: JSON.stringify({
         contents: [
           {
