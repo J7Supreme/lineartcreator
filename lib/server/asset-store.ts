@@ -4,7 +4,6 @@ import path from "node:path";
 
 import { getStore } from "@netlify/blobs";
 import { nanoid } from "nanoid";
-import sharp from "sharp";
 
 type AssetBucket = "uploads" | "source" | "final";
 
@@ -151,7 +150,30 @@ export async function normalizeLineArtImage(
     };
   }
 
-  const normalized = await sharp(Buffer.from(dataBase64, "base64"))
+  let sharpFactory: (input: Buffer) => {
+    flatten: (options: { background: string }) => any;
+    grayscale: () => any;
+    threshold: (value: number, options: { grayscale: true }) => any;
+    resize: (options: {
+      width: number;
+      height: number;
+      fit: "contain";
+      background: string;
+      position: "center";
+    }) => any;
+    png: () => { toBuffer: () => Promise<Buffer> };
+  };
+
+  try {
+    ({ default: sharpFactory } = await import("sharp"));
+  } catch {
+    return {
+      dataBase64,
+      mimeType
+    };
+  }
+
+  const normalized = await sharpFactory(Buffer.from(dataBase64, "base64"))
     .flatten({ background: "#ffffff" })
     .grayscale()
     .threshold(235, { grayscale: true })
