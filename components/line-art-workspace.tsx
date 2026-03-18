@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import type { AssistantStatusPhase, Project, Revision, RevisionStatus } from "@/lib/domain";
+import { BASE_PATH } from "@/lib/domain";
 import { createLineArtDataUrl } from "@/lib/line-art";
 
 import styles from "./line-art-workspace.module.css";
@@ -68,7 +69,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
 
     const initializeProject = async () => {
       try {
-        const response = await fetch("/api/project/reset", {
+        const response = await fetch(`${BASE_PATH}/api/project/reset`, {
           method: "POST"
         });
         const payload = (await response.json()) as { project?: Project; error?: string };
@@ -105,7 +106,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
 
     const tick = async () => {
       try {
-        const response = await fetch(`/api/project/revisions/${activeRevisionId}`, {
+        const response = await fetch(`${BASE_PATH}/api/project/revisions/${activeRevisionId}`, {
           cache: "no-store"
         });
         const payload = (await response.json()) as {
@@ -229,7 +230,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
 
     startRestoreTransition(async () => {
       try {
-        const response = await fetch("/api/project/restore", {
+        const response = await fetch(`${BASE_PATH}/api/project/restore`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -260,7 +261,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`/api/project/revisions/${revision.id}/retry`, {
+      const response = await fetch(`${BASE_PATH}/api/project/revisions/${revision.id}/retry`, {
         method: "POST"
       });
       const payload = (await response.json()) as { project?: Project; error?: string };
@@ -284,7 +285,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
     clearSelectedFile();
 
     try {
-      const response = await fetch("/api/project/reset", { method: "POST" });
+      const response = await fetch(`${BASE_PATH}/api/project/reset`, { method: "POST" });
       const payload = (await response.json()) as { project?: Project; error?: string };
 
       if (!response.ok || !payload.project) {
@@ -379,7 +380,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
     setProject(optimisticProject);
 
     try {
-      const response = await fetch("/api/project/revisions", {
+      const response = await fetch(`${BASE_PATH}/api/project/revisions`, {
         method: "POST",
         body: formData
       });
@@ -410,7 +411,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
           <div className={styles.heroVersion}>J7Supreme {APP_VERSION}</div>
         </div>
         <img
-          src="/logo.png?v=20260318-1"
+          src={`${BASE_PATH}/logo.png?v=20260318-1`}
           alt="J7 logo"
           width={52}
           height={52}

@@ -1,3 +1,5 @@
+export const BASE_PATH = "/lineartcreator";
+
 export type RevisionStatus =
   | "queued"
   | "generating_source_image"

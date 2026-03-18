@@ -5,6 +5,8 @@ import path from "node:path";
 import { getStore } from "@netlify/blobs";
 import { nanoid } from "nanoid";
 
+import { BASE_PATH } from "../domain";
+
 type AssetBucket = "uploads" | "source" | "final";
 
 type SavedAsset = {
@@ -36,7 +38,7 @@ function createRelativePath(bucket: AssetBucket, mimeType: string) {
 }
 
 function toAssetUrl(relativePath: string) {
-  return `/api/assets/${relativePath}`;
+  return `${BASE_PATH}/api/assets/${relativePath}`;
 }
 
 function isValidRelativePath(relativePath: string) {
@@ -122,8 +124,9 @@ function decodeDataUrl(dataUrl: string) {
 }
 
 export async function loadImagePartFromUrl(imageUrl: string) {
-  if (imageUrl.startsWith("/api/assets/")) {
-    const relativePath = imageUrl.replace(/^\/api\/assets\//, "");
+  const prefix = `${BASE_PATH}/api/assets/`;
+  if (imageUrl.startsWith(prefix)) {
+    const relativePath = imageUrl.replace(new RegExp(`^${prefix.replace("/", "\\/")}`), "");
     const asset = await readAsset(relativePath);
 
     return {
