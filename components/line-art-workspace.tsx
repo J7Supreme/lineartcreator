@@ -1,6 +1,4 @@
 "use client";
-
-import Image from "next/image";
 import {
   startTransition,
   useEffect,
@@ -411,8 +409,8 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
           <h1>Line Art Creator</h1>
           <div className={styles.heroVersion}>J7Supreme {APP_VERSION}</div>
         </div>
-        <Image
-          src="/logo.png"
+        <img
+          src="/logo.png?v=20260318-1"
           alt="J7 logo"
           width={52}
           height={52}
@@ -536,7 +534,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
               placeholder={
                 isInitial
                   ? "Example: A cat napping in a sunny garden with thick outlines."
-                  : "Example: Make the cat bigger, remove the fence, and keep the thick outlines."
+                  : "Note: Some copyrighted content may not be supported."
               }
               rows={3}
               value={draft}
@@ -676,45 +674,94 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
 
               <div className={styles.previewBody}>
                 {activeRevision ? (
-                  <>
-                    <div className={styles.paperFrameWrap}>
-                      <div className={styles.paperFrame}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt={activeRevision.title}
-                          className={styles.previewImage}
-                          src={activeRevision.imageUrl}
-                        />
+                  isWorking ? (
+                    <>
+                      <div className={styles.paperFrameWrap}>
+                        <div className={`${styles.paperFrame} ${styles.paperFrameLoading}`}>
+                          <div className={styles.previewLoading}>
+                            <div className={styles.loadingSheet} aria-hidden="true">
+                              <span className={styles.loadingStrokeTop} />
+                              <span className={styles.loadingStrokeMid} />
+                              <span className={styles.loadingStrokeBottom} />
+                              <span className={styles.loadingPencil} />
+                            </div>
+                            <div className={styles.previewLoadingCopy}>
+                              <strong>{getPhaseLabel(activeRevision.status)}</strong>
+                              <p>Your line art is being sketched now.</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      <div className={styles.previewMeta}>
+                        <h3>{activeRevision.title}</h3>
+                        <div className={styles.metaPills}>
+                          <span>{getStatusLabel(activeRevision.status)}</span>
+                          <span>{formatTime(activeRevision.createdAt)}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : activeRevision.status === "failed" ? (
+                    <>
+                      <div className={styles.paperFrameWrap}>
+                        <div className={`${styles.paperFrame} ${styles.paperFrameLoading} ${styles.paperFrameFailed}`}>
+                          <div className={styles.previewLoading}>
+                            <div className={`${styles.loadingSheet} ${styles.loadingSheetIdle} ${styles.loadingSheetFailed}`} aria-hidden="true">
+                              <span className={styles.loadingStrokeTop} />
+                              <span className={styles.loadingStrokeMid} />
+                              <span className={styles.loadingStrokeBottom} />
+                              <span className={`${styles.loadingPencil} ${styles.loadingPencilIdle}`} />
+                            </div>
+                            <div className={styles.previewLoadingCopy}>
+                              <strong>Generation failed</strong>
+                              <p>{activeRevision.errorMessage ?? "Please try again with a new request."}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.previewMeta}>
+                        <h3>{activeRevision.title}</h3>
+                        <div className={styles.metaPills}>
+                          <span>{getStatusLabel(activeRevision.status)}</span>
+                          <span>{formatTime(activeRevision.createdAt)}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={styles.paperFrameWrap}>
+                        <div className={styles.paperFrame}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            alt={activeRevision.title}
+                            className={styles.previewImage}
+                            src={activeRevision.imageUrl}
+                          />
+                        </div>
+                      </div>
 
-                    <div className={styles.previewMeta}>
-                      <h3>{activeRevision.title}</h3>
-                      <div className={styles.metaPills}>
-                        <span>{getStatusLabel(activeRevision.status)}</span>
-                        <span>{formatTime(activeRevision.createdAt)}</span>
+                      <div className={styles.previewMeta}>
+                        <h3>{activeRevision.title}</h3>
+                        <div className={styles.metaPills}>
+                          <span>{getStatusLabel(activeRevision.status)}</span>
+                          <span>{formatTime(activeRevision.createdAt)}</span>
+                        </div>
                       </div>
-                    </div>
-                  </>
+                    </>
+                  )
                 ) : (
                   <div className={styles.paperFrameWrap}>
-                    <div className={`${styles.paperFrame} ${styles.paperFrameEmpty}`}>
-                      <div className={styles.previewEmpty}>
-                        <svg
-                          width="44"
-                          height="44"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <rect x="3" y="3" width="18" height="18" rx="2" />
-                          <path d="M3 9h18M9 21V9" />
-                        </svg>
-                        <p>Your drawing will appear here</p>
+                    <div className={`${styles.paperFrame} ${styles.paperFrameLoading} ${styles.paperFrameEmpty}`}>
+                      <div className={styles.previewLoading}>
+                        <div className={`${styles.loadingSheet} ${styles.loadingSheetIdle}`} aria-hidden="true">
+                          <span className={styles.loadingStrokeTop} />
+                          <span className={styles.loadingStrokeMid} />
+                          <span className={styles.loadingStrokeBottom} />
+                          <span className={`${styles.loadingPencil} ${styles.loadingPencilIdle}`} />
+                        </div>
+                        <div className={styles.previewLoadingCopy}>
+                          <strong>Ready to draw</strong>
+                          <p>Your drawing will appear here.</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -740,7 +787,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
                       onClick={() => void handleDownload(activeRevision)}
                       disabled={activeRevision.status !== "ready"}
                     >
-                      Download PNG
+                      Download
                     </button>
                   </div>
                 ) : null}
@@ -809,7 +856,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
                 onClick={() => void handleDownload(viewerRevision)}
                 disabled={viewerRevision.status !== "ready"}
               >
-                Download PNG
+                Download
               </button>
             </div>
           </div>

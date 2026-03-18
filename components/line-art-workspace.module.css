@@ -533,6 +533,184 @@
   max-height: 100%;
 }
 
+.paperFrameLoading {
+  border: 0;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(26, 79, 171, 0.05),
+    0 18px 34px rgba(17, 17, 17, 0.06);
+}
+
+.previewLoading {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  color: color-mix(in oklab, var(--paw-brown) 72%, var(--paw-dark));
+}
+
+.loadingSheet {
+  position: relative;
+  width: min(100%, 18rem);
+  aspect-ratio: 0.74;
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(circle at top right, rgba(245, 197, 24, 0.12), transparent 30%),
+    linear-gradient(180deg, #fffefb 0%, #fff 100%);
+  box-shadow:
+    0 14px 28px rgba(45, 45, 45, 0.08),
+    inset 0 0 0 1px rgba(200, 121, 65, 0.18);
+  overflow: hidden;
+}
+
+.loadingSheet::after {
+  content: "";
+  position: absolute;
+  inset: 0.75rem;
+  border-radius: 0.95rem;
+  border: 3px solid color-mix(in oklab, var(--paw-brown) 62%, white);
+  opacity: 0.9;
+}
+
+.loadingSheetIdle::after {
+  opacity: 0.82;
+}
+
+.loadingSheetFailed {
+  background:
+    radial-gradient(circle at top right, rgba(232, 41, 58, 0.08), transparent 32%),
+    linear-gradient(180deg, #fffdfb 0%, #fff 100%);
+  box-shadow:
+    0 14px 28px rgba(45, 45, 45, 0.06),
+    inset 0 0 0 1px rgba(232, 41, 58, 0.14);
+}
+
+.loadingSheetFailed::after {
+  border-color: color-mix(in oklab, var(--paw-red) 28%, var(--paw-brown));
+  opacity: 0.7;
+}
+
+.loadingStrokeTop,
+.loadingStrokeMid,
+.loadingStrokeBottom {
+  position: absolute;
+  left: 18%;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    color-mix(in oklab, var(--paw-yellow) 78%, white),
+    color-mix(in oklab, var(--paw-brown) 45%, white));
+  opacity: 0.95;
+  transform-origin: left center;
+  animation: loadingStrokeReveal 1.8s ease-in-out infinite;
+}
+
+.loadingStrokeTop {
+  top: 24%;
+  width: 18%;
+}
+
+.loadingStrokeMid {
+  top: 49%;
+  width: 31%;
+  animation-delay: 0.28s;
+}
+
+.loadingStrokeBottom {
+  top: 73%;
+  width: 22%;
+  animation-delay: 0.56s;
+}
+
+.loadingPencil {
+  position: absolute;
+  top: 22%;
+  left: 18%;
+  width: 2.9rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    color-mix(in oklab, var(--paw-yellow) 88%, white) 0 68%,
+    color-mix(in oklab, var(--paw-brown) 75%, white) 68% 86%,
+    color-mix(in oklab, var(--paw-dark) 88%, white) 86% 100%);
+  transform: rotate(-12deg);
+  transform-origin: 82% 50%;
+  box-shadow: 0 5px 12px rgba(45, 45, 45, 0.12);
+  animation: loadingPencilSketch 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.loadingPencil::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+  border-right: 0.5rem solid color-mix(in oklab, var(--paw-cream) 78%, white);
+}
+
+.loadingPencil::after {
+  content: "";
+  position: absolute;
+  left: -0.68rem;
+  top: 0.21rem;
+  width: 0.22rem;
+  height: 0.18rem;
+  border-radius: 999px;
+  background: var(--paw-dark);
+}
+
+.loadingPencilIdle,
+.loadingSheetIdle .loadingStrokeTop,
+.loadingSheetIdle .loadingStrokeMid,
+.loadingSheetIdle .loadingStrokeBottom {
+  animation: none;
+}
+
+.loadingPencilIdle {
+  top: 71%;
+  left: 39%;
+  opacity: 0.88;
+}
+
+.paperFrameFailed {
+  box-shadow:
+    inset 0 0 0 1px rgba(232, 41, 58, 0.06),
+    0 18px 34px rgba(17, 17, 17, 0.05);
+}
+
+.paperFrameFailed .previewLoadingCopy strong {
+  color: color-mix(in oklab, var(--paw-red) 72%, var(--paw-dark));
+}
+
+.paperFrameFailed .previewLoadingCopy p {
+  max-width: 28ch;
+}
+
+.previewLoadingCopy {
+  display: grid;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.previewLoadingCopy strong {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.previewLoadingCopy p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
 .previewImage,
 .viewerImage {
   width: 100%;
@@ -831,27 +1009,7 @@
 
 /* ─── Preview panel empty placeholder ───────────────────── */
 .paperFrameEmpty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-style: dashed;
-  opacity: 0.65;
-}
-
-.previewEmpty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--ink-soft);
-  text-align: center;
-  padding: 1.5rem;
-}
-
-.previewEmpty p {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 700;
+  opacity: 0.92;
 }
 
 /* ─── Revision list empty state ─────────────────────────── */
@@ -875,6 +1033,51 @@
   }
   100% {
     transform: scale(0.9);
+  }
+}
+
+@keyframes loadingStrokeReveal {
+  0%,
+  12% {
+    transform: scaleX(0.08);
+    opacity: 0.25;
+  }
+  30%,
+  72% {
+    transform: scaleX(1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.35;
+  }
+}
+
+@keyframes loadingPencilSketch {
+  0% {
+    top: 22%;
+    left: 18%;
+  }
+  24% {
+    top: 22%;
+    left: 34%;
+  }
+  33% {
+    top: 47%;
+    left: 18%;
+  }
+  57% {
+    top: 47%;
+    left: 47%;
+  }
+  66% {
+    top: 71%;
+    left: 18%;
+  }
+  90%,
+  100% {
+    top: 71%;
+    left: 38%;
   }
 }
 
