@@ -58,9 +58,8 @@
   background: transparent;
   border: 0;
   box-shadow: none;
-  /* White bg becomes invisible via multiply; black arrow picks up page color */
-  mix-blend-mode: multiply;
-  opacity: 0.82;
+  mix-blend-mode: normal;
+  opacity: 1;
 }
 
 /* ─── Two-column workspace ───────────────────────────────── */
@@ -542,6 +541,7 @@
   max-height: 100%;
   object-fit: contain;
   display: block;
+  filter: drop-shadow(0 8px 18px rgba(17, 17, 17, 0.12));
 }
 
 /* Meta row beneath the drawing */
