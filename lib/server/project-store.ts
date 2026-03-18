@@ -46,6 +46,10 @@ function createSeedProject(projectId: string): Project {
   };
 }
 
+export function createEmptyProject(projectId = "project-initial"): Project {
+  return createSeedProject(projectId);
+}
+
 function normalizeStatus(status: unknown): RevisionStatus {
   switch (status) {
     case "queued":

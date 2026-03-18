@@ -39,6 +39,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
   });
   const [isViewingRevisions, setIsViewingRevisions] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const hasInitializedProjectRef = useRef(false);
 
   const isInitial = project.messages.length === 0;
   const activeRevision = useMemo(
@@ -57,6 +58,45 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
     !activeRevisionId.startsWith("temp-");
   const isWorking = activeRevision ? isWorkingStatus(activeRevision.status) : false;
   const isBusy = isSubmitting || isWorking;
+
+  useEffect(() => {
+    if (hasInitializedProjectRef.current) {
+      return;
+    }
+
+    hasInitializedProjectRef.current = true;
+
+    let cancelled = false;
+
+    const initializeProject = async () => {
+      try {
+        const response = await fetch("/api/project/reset", {
+          method: "POST"
+        });
+        const payload = (await response.json()) as { project?: Project; error?: string };
+
+        if (!response.ok || !payload.project) {
+          throw new Error(payload.error ?? "Unable to start a fresh project.");
+        }
+
+        if (!cancelled) {
+          setProject(payload.project);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setErrorMessage(
+            error instanceof Error ? error.message : "Unable to start a fresh project."
+          );
+        }
+      }
+    };
+
+    void initializeProject();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!shouldPollActiveRevision || !activeRevisionId) {
