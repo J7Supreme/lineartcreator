@@ -109,6 +109,7 @@
 
 /* ─── Panel headers ──────────────────────────────────────── */
 .panelHeader {
+  grid-row: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -149,6 +150,7 @@
 
 /* ─── Error banner ───────────────────────────────────────── */
 .errorBanner {
+  grid-row: 2;
   margin: 0.65rem 1.1rem 0;
   padding: 0.75rem 1rem;
   min-height: 3.25rem;
@@ -166,6 +168,7 @@
 
 /* ─── Message list ───────────────────────────────────────── */
 .messageList {
+  grid-row: 3;
   display: grid;
   align-content: start;
   gap: 0.75rem;
@@ -295,6 +298,7 @@
 
 /* ─── Composer (input area) ──────────────────────────────── */
 .composer {
+  grid-row: 4;
   padding: 0.85rem 1.1rem 1rem;
   background: color-mix(in oklab, var(--surface-strong) 55%, white);
   border-top: 2px solid color-mix(in oklab, var(--outline) 60%, transparent);
@@ -982,6 +986,7 @@
 
 /* ─── Chat panel empty state ─────────────────────────────── */
 .emptyState {
+  grid-row: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
