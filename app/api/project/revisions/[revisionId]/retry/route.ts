@@ -27,7 +27,7 @@ export async function POST(
     const { revisionId } = await params;
     const { project, revision } = await retryRevision(revisionId);
 
-    startRevisionJob(revision.id);
+    startRevisionJob(revision.id, project.id);
 
     return NextResponse.json({ project, revision });
   } catch (error) {

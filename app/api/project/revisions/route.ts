@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     const input = await parseRequest(request);
     const { project, revision } = await createPendingRevision(input);
 
-    startRevisionJob(revision.id);
+    startRevisionJob(revision.id, project.id);
 
     return NextResponse.json({
       project,

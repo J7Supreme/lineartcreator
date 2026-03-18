@@ -25,21 +25,27 @@ declare global {
 const runningJobs = globalThis.__lineArtRevisionJobs ?? new Set<string>();
 globalThis.__lineArtRevisionJobs = runningJobs;
 
-export function startRevisionJob(revisionId: string) {
-  if (runningJobs.has(revisionId)) {
+function getJobKey(projectId: string, revisionId: string) {
+  return `${projectId}:${revisionId}`;
+}
+
+export function startRevisionJob(revisionId: string, projectId: string) {
+  const jobKey = getJobKey(projectId, revisionId);
+
+  if (runningJobs.has(jobKey)) {
     return;
   }
 
-  runningJobs.add(revisionId);
+  runningJobs.add(jobKey);
 
-  void runRevisionJob(revisionId).finally(() => {
-    runningJobs.delete(revisionId);
+  void runRevisionJob(revisionId, projectId).finally(() => {
+    runningJobs.delete(jobKey);
   });
 }
 
-async function runRevisionJob(revisionId: string) {
+async function runRevisionJob(revisionId: string, projectId: string) {
   try {
-    const { project, revision } = await getRevisionById(revisionId);
+    const { project, revision } = await getRevisionById(revisionId, projectId);
 
     if (!revision) {
       return;
@@ -73,10 +79,15 @@ async function runRevisionJob(revisionId: string) {
         mimeType: generatedSource.mimeType
       };
 
-      await updateRevisionPhase(revisionId, "generating_line_art", {
-        sourceImageUrl: savedSource.url,
-        modelName: generatedSource.modelName
-      });
+      await updateRevisionPhase(
+        revisionId,
+        "generating_line_art",
+        {
+          sourceImageUrl: savedSource.url,
+          modelName: generatedSource.modelName
+        },
+        projectId
+      );
     }
 
     const lineArt = await convertToLineArt({
@@ -92,23 +103,28 @@ async function runRevisionJob(revisionId: string) {
       normalizedLineArt.dataBase64,
       normalizedLineArt.mimeType
     );
-    const { revision: freshRevision } = await getRevisionById(revisionId);
+    const { revision: freshRevision } = await getRevisionById(revisionId, projectId);
     const sourceImageUrl =
       freshRevision?.sourceImageUrl ?? revision.sourceImageUrl ?? parentRevision?.sourceImageUrl ?? null;
 
-    await completeRevision(revisionId, {
-      title: deriveRevisionTitle(revision.prompt, revision.sourceType),
-      imageUrl: savedFinal.url,
-      thumbnailUrl: savedFinal.url,
-      sourceImageUrl,
-      modelName: lineArt.modelName,
-      assistantText:
-        lineArt.textResponse?.trim() || "Your line art is ready. Open it, review it, and keep iterating if needed."
-    });
+    await completeRevision(
+      revisionId,
+      {
+        title: deriveRevisionTitle(revision.prompt, revision.sourceType),
+        imageUrl: savedFinal.url,
+        thumbnailUrl: savedFinal.url,
+        sourceImageUrl,
+        modelName: lineArt.modelName,
+        assistantText:
+          lineArt.textResponse?.trim() ||
+          "Your line art is ready. Open it, review it, and keep iterating if needed."
+      },
+      projectId
+    );
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Something went wrong while generating the line art.";
 
-    await failRevision(revisionId, message);
+    await failRevision(revisionId, message, projectId);
   }
 }

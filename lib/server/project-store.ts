@@ -2,6 +2,7 @@ import "server-only";
 
 import { getStore } from "@netlify/blobs";
 import { nanoid } from "nanoid";
+import { cookies } from "next/headers";
 
 import type {
   AssistantStatusPhase,
@@ -16,6 +17,7 @@ import type {
 import { createLineArtDataUrl } from "@/lib/line-art";
 
 const PROJECT_KEY = "data";
+export const PROJECT_COOKIE_NAME = "line_art_project_id";
 
 let writeChain = Promise.resolve();
 
@@ -30,11 +32,11 @@ function formatTime(iso: string) {
   }).format(new Date(iso));
 }
 
-function createSeedProject(): Project {
+function createSeedProject(projectId: string): Project {
   const createdAt = nowIso();
 
   return {
-    id: "project-default",
+    id: projectId,
     name: "My drawing",
     createdAt,
     updatedAt: createdAt,
@@ -130,9 +132,9 @@ function normalizeMessage(message: Partial<Message>): Message {
   };
 }
 
-function normalizeProject(project: Partial<Project>): Project {
+function normalizeProject(project: Partial<Project>, fallbackProjectId: string): Project {
   return {
-    id: project.id ?? "project-default",
+    id: project.id ?? fallbackProjectId,
     name: project.name ?? "My drawing",
     createdAt: project.createdAt ?? nowIso(),
     updatedAt: project.updatedAt ?? nowIso(),
@@ -142,22 +144,41 @@ function normalizeProject(project: Partial<Project>): Project {
   };
 }
 
-async function readProjectUnlocked(): Promise<Project> {
+function getProjectStorageKey(projectId: string) {
+  return `${projectId}/${PROJECT_KEY}`;
+}
+
+async function resolveProjectId(projectId?: string) {
+  if (projectId) {
+    return projectId;
+  }
+
+  const cookieStore = await cookies();
+  const cookieProjectId = cookieStore.get(PROJECT_COOKIE_NAME)?.value?.trim();
+
+  if (cookieProjectId) {
+    return cookieProjectId;
+  }
+
+  return `project-${nanoid(12)}`;
+}
+
+async function readProjectUnlocked(projectId: string): Promise<Project> {
   const store = getStore("project");
-  const data = await store.get(PROJECT_KEY, { type: "json" });
+  const data = await store.get(getProjectStorageKey(projectId), { type: "json" });
 
   if (!data) {
-    const seed = createSeedProject();
-    await writeProject(seed);
+    const seed = createSeedProject(projectId);
+    await writeProject(seed, projectId);
     return seed;
   }
 
-  return normalizeProject(data as Partial<Project>);
+  return normalizeProject(data as Partial<Project>, projectId);
 }
 
-async function writeProject(project: Project) {
+async function writeProject(project: Project, projectId: string) {
   const store = getStore("project");
-  await store.setJSON(PROJECT_KEY, project);
+  await store.setJSON(getProjectStorageKey(projectId), project);
 }
 
 async function withWriteLock<T>(operation: () => Promise<T>) {
@@ -256,17 +277,19 @@ function isWorkingStatus(status: RevisionStatus) {
 }
 
 export async function getCurrentProject(): Promise<Project> {
-  return readProjectUnlocked();
+  const projectId = await resolveProjectId();
+  return readProjectUnlocked(projectId);
 }
 
-export async function getRevisionById(revisionId: string) {
-  const project = await getCurrentProject();
+export async function getRevisionById(revisionId: string, projectId?: string) {
+  const resolvedProjectId = await resolveProjectId(projectId);
+  const project = await readProjectUnlocked(resolvedProjectId);
   const revision = project.revisions.find((item) => item.id === revisionId) ?? null;
 
   return { project, revision };
 }
 
-export async function createPendingRevision(input: CreateRevisionInput) {
+export async function createPendingRevision(input: CreateRevisionInput, projectId?: string) {
   const prompt = input.prompt?.trim() ?? "";
   const hasUpload = Boolean(input.uploadedImageUrl);
 
@@ -279,7 +302,8 @@ export async function createPendingRevision(input: CreateRevisionInput) {
   }
 
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const parentRevisionId = input.parentRevisionId ?? project.activeRevisionId;
     const parentRevision = parentRevisionId
       ? project.revisions.find((item) => item.id === parentRevisionId) ?? null
@@ -332,7 +356,7 @@ export async function createPendingRevision(input: CreateRevisionInput) {
       ]
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return { project: nextProject, revision };
   });
@@ -341,10 +365,12 @@ export async function createPendingRevision(input: CreateRevisionInput) {
 export async function updateRevisionPhase(
   revisionId: string,
   phase: Exclude<AssistantStatusPhase, "complete">,
-  updates: Partial<Revision> = {}
+  updates: Partial<Revision> = {},
+  projectId?: string
 ) {
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const revision = project.revisions.find((item) => item.id === revisionId);
 
     if (!revision) {
@@ -365,7 +391,7 @@ export async function updateRevisionPhase(
       messages: upsertStatusMessage(project.messages, revisionId, phase, getPhaseText(phase))
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return nextProject;
   });
@@ -375,10 +401,12 @@ export async function completeRevision(
   revisionId: string,
   updates: Pick<Revision, "title" | "imageUrl" | "thumbnailUrl" | "modelName" | "sourceImageUrl"> & {
     assistantText: string;
-  }
+  },
+  projectId?: string
 ) {
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const revision = project.revisions.find((item) => item.id === revisionId);
 
     if (!revision) {
@@ -403,15 +431,16 @@ export async function completeRevision(
       messages: upsertStatusMessage(project.messages, revisionId, "complete", updates.assistantText)
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return nextProject;
   });
 }
 
-export async function failRevision(revisionId: string, errorMessage: string) {
+export async function failRevision(revisionId: string, errorMessage: string, projectId?: string) {
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const revision = project.revisions.find((item) => item.id === revisionId);
 
     if (!revision) {
@@ -430,15 +459,16 @@ export async function failRevision(revisionId: string, errorMessage: string) {
       messages: upsertStatusMessage(project.messages, revisionId, "failed", errorMessage)
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return nextProject;
   });
 }
 
-export async function restoreRevision(input: RestoreRevisionInput): Promise<Project> {
+export async function restoreRevision(input: RestoreRevisionInput, projectId?: string): Promise<Project> {
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const revision = project.revisions.find((item) => item.id === input.revisionId);
 
     if (!revision) {
@@ -451,23 +481,25 @@ export async function restoreRevision(input: RestoreRevisionInput): Promise<Proj
       updatedAt: nowIso()
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return nextProject;
   });
 }
 
-export async function resetProject(): Promise<Project> {
-  const fresh = createSeedProject();
+export async function resetProject(projectId?: string): Promise<Project> {
+  const resolvedProjectId = await resolveProjectId(projectId);
+  const fresh = createSeedProject(resolvedProjectId);
   await withWriteLock(async () => {
-    await writeProject(fresh);
+    await writeProject(fresh, resolvedProjectId);
   });
   return fresh;
 }
 
-export async function retryRevision(revisionId: string) {
+export async function retryRevision(revisionId: string, projectId?: string) {
   return withWriteLock(async () => {
-    const project = await readProjectUnlocked();
+    const resolvedProjectId = await resolveProjectId(projectId);
+    const project = await readProjectUnlocked(resolvedProjectId);
     const revision = project.revisions.find((item) => item.id === revisionId);
 
     if (!revision) {
@@ -499,7 +531,7 @@ export async function retryRevision(revisionId: string) {
       messages: upsertStatusMessage(project.messages, revisionId, phase, getPhaseText(phase))
     };
 
-    await writeProject(nextProject);
+    await writeProject(nextProject, resolvedProjectId);
 
     return { project: nextProject, revision: nextRevision };
   });
