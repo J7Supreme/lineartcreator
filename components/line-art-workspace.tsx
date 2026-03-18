@@ -889,7 +889,7 @@ function getStatusLabel(status: RevisionStatus) {
   }
 }
 
-function getPhaseLabel(phase?: AssistantStatusPhase) {
+function getPhaseLabel(phase?: AssistantStatusPhase | RevisionStatus) {
   switch (phase) {
     case "queued":
       return "Preparing your request...";
@@ -899,6 +899,8 @@ function getPhaseLabel(phase?: AssistantStatusPhase) {
       return "Generating line art...";
     case "failed":
       return "Generation failed.";
+    case "ready":
+      return "Ready";
     case "complete":
       return "Complete";
     default:
