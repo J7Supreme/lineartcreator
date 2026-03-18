@@ -410,13 +410,15 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
           <h1>Line Art Creator</h1>
           <div className={styles.heroVersion}>J7Supreme {APP_VERSION}</div>
         </div>
-        <img
-          src={`${BASE_PATH}/logo.png?v=20260318-1`}
-          alt="J7 logo"
-          width={52}
-          height={52}
-          className={styles.heroLogo}
-        />
+        <a href="https://j7sup.com" target="_blank" rel="noopener noreferrer">
+          <img
+            src={`${BASE_PATH}/logo.png?v=20260318-1`}
+            alt="J7 logo"
+            width={52}
+            height={52}
+            className={styles.heroLogo}
+          />
+        </a>
       </section>
 
       <section className={styles.workspace}>
