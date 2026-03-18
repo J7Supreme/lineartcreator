@@ -52,8 +52,13 @@ export async function saveGeneratedImage(
 ): Promise<SavedAsset> {
   const store = getStore("assets");
   const relativePath = createRelativePath(bucket, mimeType);
+  const buffer = Buffer.from(base64Data, "base64");
+  const arrayBuffer = buffer.buffer.slice(
+    buffer.byteOffset,
+    buffer.byteOffset + buffer.byteLength
+  ) as ArrayBuffer;
 
-  await store.set(relativePath, Buffer.from(base64Data, "base64").buffer as ArrayBuffer, {
+  await store.set(relativePath, arrayBuffer, {
     metadata: { mimeType }
   });
 

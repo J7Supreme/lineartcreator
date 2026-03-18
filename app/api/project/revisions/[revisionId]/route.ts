@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getRevisionById } from "@/lib/server/project-store";
-import { startRevisionJob } from "@/lib/server/revision-job";
+import { ensureRevisionJob } from "@/lib/server/revision-job";
 
 export const runtime = "nodejs";
 
@@ -18,14 +18,19 @@ export async function GET(
   { params }: { params: Promise<{ revisionId: string }> }
 ) {
   const { revisionId } = await params;
-  const { project, revision } = await getRevisionById(revisionId);
+  let { project, revision } = await getRevisionById(revisionId);
 
   if (!revision) {
     return NextResponse.json({ error: "That revision could not be found." }, { status: 404 });
   }
 
   if (isWorkingStatus(revision.status)) {
-    startRevisionJob(revision.id, project.id);
+    await ensureRevisionJob(revision.id, project.id);
+    ({ project, revision } = await getRevisionById(revisionId, project.id));
+
+    if (!revision) {
+      return NextResponse.json({ error: "That revision could not be found." }, { status: 404 });
+    }
   }
 
   return NextResponse.json({ project, revision });

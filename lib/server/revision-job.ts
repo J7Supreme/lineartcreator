@@ -20,27 +20,38 @@ import {
 declare global {
   // eslint-disable-next-line no-var
   var __lineArtRevisionJobs: Set<string> | undefined;
+  // eslint-disable-next-line no-var
+  var __lineArtRevisionJobPromises: Map<string, Promise<void>> | undefined;
 }
 
 const runningJobs = globalThis.__lineArtRevisionJobs ?? new Set<string>();
+const runningJobPromises = globalThis.__lineArtRevisionJobPromises ?? new Map<string, Promise<void>>();
 globalThis.__lineArtRevisionJobs = runningJobs;
+globalThis.__lineArtRevisionJobPromises = runningJobPromises;
 
 function getJobKey(projectId: string, revisionId: string) {
   return `${projectId}:${revisionId}`;
 }
 
 export function startRevisionJob(revisionId: string, projectId: string) {
+  void ensureRevisionJob(revisionId, projectId);
+}
+
+export function ensureRevisionJob(revisionId: string, projectId: string) {
   const jobKey = getJobKey(projectId, revisionId);
 
   if (runningJobs.has(jobKey)) {
-    return;
+    return runningJobPromises.get(jobKey) ?? Promise.resolve();
   }
 
   runningJobs.add(jobKey);
-
-  void runRevisionJob(revisionId, projectId).finally(() => {
+  const jobPromise = runRevisionJob(revisionId, projectId).finally(() => {
     runningJobs.delete(jobKey);
+    runningJobPromises.delete(jobKey);
   });
+  runningJobPromises.set(jobKey, jobPromise);
+
+  return jobPromise;
 }
 
 async function runRevisionJob(revisionId: string, projectId: string) {
