@@ -4,3 +4,27 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from = "/magicpaper"
+  to = "https://magic-paper-toys-james.netlify.app"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/magicpaper/*"
+  to = "https://magic-paper-toys-james.netlify.app/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/assets/*"
+  to = "https://magic-paper-toys-james.netlify.app/assets/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/vite.svg"
+  to = "https://magic-paper-toys-james.netlify.app/vite.svg"
+  status = 200
+  force = true

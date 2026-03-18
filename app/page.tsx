@@ -57,6 +57,43 @@ export default function Home() {
         }}>
           Built by James Hou
         </p>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          justifyContent: 'center',
+          flexWrap: 'nowrap',
+          marginTop: '32px',
+          padding: '16px',
+          alignItems: 'center'
+        }}>
+          <a
+            href="https://j7sup.com/lineartcreator"
+            style={{
+              fontSize: '16px',
+              color: 'inherit',
+              opacity: 0.7,
+              fontFamily: 'var(--font-mono), monospace',
+              textDecoration: 'underline',
+              textUnderlineOffset: '0.18em'
+            }}
+          >
+            Line art creator
+          </a>
+          <a
+            href="https://j7sup.com/magicpaper"
+            style={{
+              fontSize: '16px',
+              color: 'inherit',
+              opacity: 0.7,
+              fontFamily: 'var(--font-mono), monospace',
+              textDecoration: 'underline',
+              textUnderlineOffset: '0.18em'
+            }}
+          >
+            Magic paper toys
+          </a>
+        </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
