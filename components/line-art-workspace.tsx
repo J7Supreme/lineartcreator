@@ -533,7 +533,7 @@ export function LineArtWorkspace({ initialProject }: LineArtWorkspaceProps) {
               onChange={(event) => setDraft(event.target.value)}
               placeholder={
                 isInitial
-                  ? "Example: A cat napping in a sunny garden with thick outlines."
+                  ? "Note: Some copyrighted content may not be supported."
                   : "Note: Some copyrighted content may not be supported."
               }
               rows={3}
