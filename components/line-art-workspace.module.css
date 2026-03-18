@@ -88,7 +88,7 @@
 /* ─── Chat panel grid ────────────────────────────────────── */
 .chatPanel {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
 }
 
 /* ─── Preview panel ──────────────────────────────────────── */
@@ -151,12 +151,17 @@
 .errorBanner {
   margin: 0.65rem 1.1rem 0;
   padding: 0.75rem 1rem;
+  min-height: 3.25rem;
+  display: flex;
+  align-items: center;
   border: 2px solid color-mix(in oklab, var(--peach) 78%, black);
   border-radius: 1rem;
   background: color-mix(in oklab, var(--pink) 26%, white);
   color: color-mix(in oklab, var(--ink) 80%, black);
   font-weight: 700;
   font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 /* ─── Message list ───────────────────────────────────────── */
