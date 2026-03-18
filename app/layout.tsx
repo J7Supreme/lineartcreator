@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Baloo_2, Nunito } from "next/font/google";
+import { Baloo_2, Nunito, Fira_Code } from "next/font/google";
 
 import "./globals.css";
 
@@ -16,10 +16,17 @@ const bodyFont = Nunito({
   weight: ["400", "500", "600", "700", "800"]
 });
 
+const monoFont = Fira_Code({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
+
+
 export const metadata: Metadata = {
-  title: "Line Art Creator",
-  description: "Create printable cartoon line art by describing what you want and refining it with simple edits."
+  title: "J7Supreme",
+  description: "Building the future of creative tools."
 };
+
 
 export default function RootLayout({
   children
@@ -28,7 +35,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${displayFont.variable} ${bodyFont.variable}`}>{children}</body>
+      <body className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable}`}>{children}</body>
     </html>
+
   );
 }

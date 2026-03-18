@@ -1,4 +1,4 @@
-export const BASE_PATH = "/lineartcreator";
+export const BASE_PATH = "";
 
 export type RevisionStatus =
   | "queued"
