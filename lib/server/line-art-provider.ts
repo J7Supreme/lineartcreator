@@ -281,10 +281,26 @@ export function deriveRevisionTitle(prompt: string, sourceType: "prompt" | "uplo
 }
 
 function getProvider(): Provider {
-  const providerName = process.env.LINE_ART_PROVIDER ?? "demo";
+  const providerName = process.env.LINE_ART_PROVIDER?.trim();
+
+  if (!providerName) {
+    if (process.env.NODE_ENV !== "production") {
+      return new DemoLineArtProvider();
+    }
+
+    throw new Error(
+      "LINE_ART_PROVIDER is not set. Configure LINE_ART_PROVIDER=gemini in production."
+    );
+  }
 
   switch (providerName) {
     case "demo":
+      if (process.env.NODE_ENV === "production") {
+        throw new Error(
+          "LINE_ART_PROVIDER=demo is not allowed in production. Configure LINE_ART_PROVIDER=gemini."
+        );
+      }
+
       return new DemoLineArtProvider();
     case "gemini":
       return new GeminiLineArtProvider();
