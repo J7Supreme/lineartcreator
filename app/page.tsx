@@ -22,7 +22,8 @@ export default function Home() {
       color: 'var(--text-main)',
       fontFamily: 'var(--font-body), sans-serif',
       textAlign: 'center',
-      padding: '20px'
+      padding: '20px',
+      paddingTop: 'calc(20px - 40px)'
     }}>
       <img
         src="/logo.png"
@@ -34,10 +35,11 @@ export default function Home() {
           filter: 'var(--logo-filter)'
         }}
       />
-      
+
       <div style={{
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         gap: '8px'
       }}>
         <h1 style={{
@@ -60,39 +62,114 @@ export default function Home() {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '12px',
-          justifyContent: 'center',
-          flexWrap: 'nowrap',
+          gap: '32px',
           marginTop: '32px',
           padding: '16px',
           alignItems: 'center'
         }}>
-          <a
-            href="https://j7sup.com/lineartcreator"
-            style={{
+          {/* For kids */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            alignItems: 'center',
+            textAlign: 'center'
+          }}>
+            <span style={{
               fontSize: '16px',
+              fontWeight: '400',
+              margin: '0 0 4px 0',
               color: 'inherit',
-              opacity: 0.7,
               fontFamily: 'var(--font-mono), monospace',
-              textDecoration: 'underline',
-              textUnderlineOffset: '0.18em'
-            }}
-          >
-            Line art creator
-          </a>
-          <a
-            href="https://j7sup.com/magicpaper"
-            style={{
+              opacity: 0.7
+            }}>
+              For kids
+            </span>
+            <a
+              href="https://j7sup.com/lineartcreator"
+              style={{
+                fontSize: '16px',
+                color: 'inherit',
+                opacity: 0.7,
+                fontFamily: 'var(--font-mono), monospace',
+                textDecoration: 'underline',
+                textUnderlineOffset: '0.18em',
+                whiteSpace: 'nowrap'
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Line art creator
+            </a>
+            <a
+              href="https://j7sup.com/magicpaper"
+              style={{
+                fontSize: '16px',
+                color: 'inherit',
+                opacity: 0.7,
+                fontFamily: 'var(--font-mono), monospace',
+                textDecoration: 'underline',
+                textUnderlineOffset: '0.18em',
+                whiteSpace: 'nowrap'
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Magic paper toys
+            </a>
+          </div>
+
+          {/* For AI Workflow */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            alignItems: 'center',
+            textAlign: 'center'
+          }}>
+            <span style={{
               fontSize: '16px',
+              fontWeight: '400',
+              margin: '0 0 4px 0',
               color: 'inherit',
-              opacity: 0.7,
               fontFamily: 'var(--font-mono), monospace',
-              textDecoration: 'underline',
-              textUnderlineOffset: '0.18em'
-            }}
-          >
-            Magic paper toys
-          </a>
+              opacity: 0.7
+            }}>
+              For AI Workflow
+            </span>
+            <a
+              href="https://skills.sh/j7supreme/design-system-skills/design-system-governance-workflow"
+              style={{
+                fontSize: '16px',
+                color: 'inherit',
+                opacity: 0.7,
+                fontFamily: 'var(--font-mono), monospace',
+                textDecoration: 'underline',
+                textUnderlineOffset: '0.18em',
+                whiteSpace: 'nowrap'
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Agent skill: Design system governance workflow
+            </a>
+            <a
+              href="https://www.npmjs.com/package/@j7supreme/skill-dashboard"
+              style={{
+                fontSize: '16px',
+                color: 'inherit',
+                opacity: 0.7,
+                fontFamily: 'var(--font-mono), monospace',
+                textDecoration: 'underline',
+                textUnderlineOffset: '0.18em',
+                whiteSpace: 'nowrap'
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Skill dashboard for agents
+            </a>
+          </div>
         </div>
       </div>
 
