@@ -94,7 +94,7 @@ export default function Home() {
                 fontFamily: 'var(--font-mono), monospace',
                 textDecoration: 'underline',
                 textUnderlineOffset: '0.18em',
-                whiteSpace: 'nowrap'
+                wordBreak: 'break-word'
               }}
               target="_blank"
               rel="noopener noreferrer"
@@ -110,7 +110,7 @@ export default function Home() {
                 fontFamily: 'var(--font-mono), monospace',
                 textDecoration: 'underline',
                 textUnderlineOffset: '0.18em',
-                whiteSpace: 'nowrap'
+                wordBreak: 'break-word'
               }}
               target="_blank"
               rel="noopener noreferrer"
@@ -146,7 +146,7 @@ export default function Home() {
                 fontFamily: 'var(--font-mono), monospace',
                 textDecoration: 'underline',
                 textUnderlineOffset: '0.18em',
-                whiteSpace: 'nowrap'
+                wordBreak: 'break-word'
               }}
               target="_blank"
               rel="noopener noreferrer"
@@ -162,7 +162,7 @@ export default function Home() {
                 fontFamily: 'var(--font-mono), monospace',
                 textDecoration: 'underline',
                 textUnderlineOffset: '0.18em',
-                whiteSpace: 'nowrap'
+                wordBreak: 'break-word'
               }}
               target="_blank"
               rel="noopener noreferrer"
